@@ -1,2 +1,2 @@
 # PSvCloud
-A PowerShell Module for VMware vCloud Director
+A PowerShell module for VMware vCloud Director
