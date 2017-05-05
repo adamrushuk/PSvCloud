@@ -1,3 +1,4 @@
+# Default to Test during testing
 param ($Task = 'Test')
 
 # Grab nuget bits, install modules, set build variables, start build.
