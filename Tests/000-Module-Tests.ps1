@@ -15,19 +15,19 @@ Describe 'Module Manifest Tests' {
     }
 }
 
-Describe -Name 'Module Tests' -Fixture {
+Describe -Name 'Module Tests' {
     It -Name "Attempting to import the Module" -Test {
         $Module = Import-Module $ModulePath -Force -PassThru | Where-Object {$_.Name -eq $ModuleName}
         $Module.Name | Should be $ModuleName
     }
 }
 
-Describe "Comment-based help for $ModuleName" -Tags Help {
+Describe "Comment-based help for $ModuleName" {
 
     $Functions = Get-Command -Module $ModuleName -CommandType Function
 
-    foreach ($Function in $Functions) {
-        $Help = Get-Help $Function.Name
+    foreach ($Func in $Functions) {
+        $Help = Get-Help $Func.Name
 
         Context $Help.Name {
             it "Has Synopsis" {
@@ -58,5 +58,5 @@ Describe "Comment-based help for $ModuleName" -Tags Help {
                 $Help.Examples | Should Not BeNullOrEmpty
             }
         }
-    }
-}
+    } # End foreach function
+} # End Comment-based help
