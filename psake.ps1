@@ -20,7 +20,7 @@ Properties {
     }
 }
 
-Task Default -Depends Deploy
+Task Default -Depends Test
 
 Task Init {
     $lines
@@ -35,7 +35,8 @@ Task Test -Depends Init  {
     "`n`tSTATUS: Testing with PowerShell $PSVersion"
 
     # Gather test results. Store them in a variable and file
-    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile"
+    $TestScripts = Get-ChildItem "$ProjectRoot\Tests\*Tests.ps1"
+    $TestResults = Invoke-Pester -Script $TestScripts -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile"
 
     # In Appveyor?  Upload our tests! #Abstract this into a function?
     If($ENV:BHBuildSystem -eq 'AppVeyor')

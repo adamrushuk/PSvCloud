@@ -1,18 +1,25 @@
+# Version number
+version: 0.1.0.{build}
+
 # See http://www.appveyor.com/docs/appveyor-yml for many more options
 environment:
   NugetApiKey:
     secure: TODO
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
-os: WMF 5
+image: WMF 5
 
 # Skip on updates to the readme.
 # We can force this by adding [skip ci] or [ci skip] anywhere in commit message
 skip_commits:
   message: /updated readme.*|update readme.*s/
 
+# Disable automatic builds
 build: false
 
-# Kick off the CI/CD pipeline
+# Invoke Pester to run all of the unit tests, then save the results into XML in order to populate the AppVeyor tests section
+# If any of the tests fail, consider the pipeline failed
 test_script:
-- ps: . .\build.ps1
+  - ps: $res = Invoke-Pester -Path ".\Tests" -OutputFormat NUnitXml -OutputFile TestsResults.xml -PassThru
+  - ps: (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\TestsResults.xml))
+  - ps: if ($res.FailedCount -gt 0) { throw "$($res.FailedCount) tests failed."}
