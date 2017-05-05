@@ -17,6 +17,13 @@ skip_commits:
 # Disable automatic builds
 build: false
 
+# Install NuGet to interact with the PowerShell Gallery
+install:
+- ps: |
+    # TODO
+    #Install-PackageProvider -Name NuGet -Force | Out-Null
+    Install-Module -Name Pester -Force
+
 # Invoke Pester to run all of the unit tests, then save the results into XML in order to populate the AppVeyor tests section
 # If any of the tests fail, consider the pipeline failed
 test_script:
