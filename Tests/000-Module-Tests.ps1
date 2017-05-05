@@ -1,8 +1,9 @@
+Clear-Host
 $ProjectRoot = Resolve-Path "$PSScriptRoot\.."
-$ModuleRoot = Split-Path (Resolve-Path "$ProjectRoot\*\*.psm1")
+$ModuleRoot = Split-Path (Resolve-Path "$ProjectRoot\*\*.psd1")
 $ModuleName = Split-Path $ModuleRoot -Leaf
-$ModulePath = (Join-Path $ModuleRoot "$ModuleName.psm1")
-Import-Module $ModulePath -Force -Verbose
+$ModulePath = (Join-Path $ModuleRoot "$ModuleName.psd1")
+Import-Module $ModulePath -Force -Verbose | Remove-Module -Force
 
 $ModuleManifestName = "$($ModuleName).psd1"
 $ModuleManifestPath = "$PSScriptRoot\..\$ModuleManifestName"
@@ -10,15 +11,14 @@ $ModuleManifestPath = (Join-Path $ModuleRoot $ModuleManifestName)
 
 Describe 'Module Manifest Tests' {
     It 'Passes Test-ModuleManifest' {
-        $Result = Test-ModuleManifest -Path $ModuleManifestPath
-        $Result | Should Be $true
+        { $Result = Test-ModuleManifest -Path $ModuleManifestPath -ErrorAction Stop } | Should Not Throw
     }
 }
 
 Describe -Name 'Module Tests' -Fixture {
     It -Name "Attempting to import the Module" -Test {
-        $Module = Import-Module $ModulePath -Force -PassThru | Where-Object {$_.Name -eq 'PSvCloud'}
-        $Module.Name | Should be "PSvCloud"
+        $Module = Import-Module $ModulePath -Force -PassThru | Where-Object {$_.Name -eq $ModuleName}
+        $Module.Name | Should be $ModuleName
     }
 }
 

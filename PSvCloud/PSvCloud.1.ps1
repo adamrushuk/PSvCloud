@@ -17,4 +17,4 @@ foreach ($FunctionFile in @($Public + $Private)) {
 }
 
 # Export the Public modules
-Export-ModuleMember -Function $Public.Basename -Verbose
+$Public.Basename

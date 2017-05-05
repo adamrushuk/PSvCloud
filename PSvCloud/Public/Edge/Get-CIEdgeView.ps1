@@ -1,25 +1,25 @@
 function Get-CIEdgeView {
     <#
-        .SYNOPSIS
-        Gets the Edge View.
+    .SYNOPSIS
+    Gets the Edge View.
 
-        .DESCRIPTION
-        Gets the Edge View using the Search-Cloud cmdlet.
+    .DESCRIPTION
+    Gets the Edge View using the Search-Cloud cmdlet.
 
-        .PARAMETER Name
-        Specify a single vShield Edge name. Use quotes if the name includes spaces.
+    .PARAMETER Name
+    Specify a single vShield Edge name. Use quotes if the name includes spaces.
 
-        .INPUTS
-        System.String
+    .INPUTS
+    System.String
 
-        .OUTPUTS
-        VMware.VimAutomation.Cloud.Views.Gateway
+    .OUTPUTS
+    VMware.VimAutomation.Cloud.Views.Gateway
 
-        .EXAMPLE
-        Get-CIEdgeView -Name 'Edge01'
+    .EXAMPLE
+    Get-CIEdgeView -Name 'Edge01'
 
-        .NOTES
-        Author: Adam Rush
+    .NOTES
+    Author: Adam Rush
     #>
     [CmdletBinding()]
     [OutputType('VMware.VimAutomation.Cloud.Views.Gateway')]
