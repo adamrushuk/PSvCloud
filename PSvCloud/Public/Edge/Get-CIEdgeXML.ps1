@@ -9,6 +9,12 @@ function Get-CIEdgeXML {
     .PARAMETER EdgeView
     EdgeView object for SessionKey and Name properties.
 
+    .INPUTS
+    VMware.VimAutomation.Cloud.Views.Gateway
+
+    .OUTPUTS
+    System.Xml.XmlDocument
+
     .EXAMPLE
     $EdgeXML = Get-CIEdgeXML $EdgeView
 
