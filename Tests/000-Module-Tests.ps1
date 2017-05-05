@@ -1,4 +1,3 @@
-Clear-Host
 $ProjectRoot = Resolve-Path "$PSScriptRoot\.."
 $ModuleRoot = Split-Path (Resolve-Path "$ProjectRoot\*\*.psd1")
 $ModuleName = Split-Path $ModuleRoot -Leaf
