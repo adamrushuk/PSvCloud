@@ -1,15 +1,24 @@
-# Default to Test during testing
 param ($Task = 'Default')
 
 # Grab nuget bits, install modules, set build variables, start build.
 Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
 
-Install-Module Psake, PSDeploy, BuildHelpers, VMware.PowerCLI -Force -AllowClobber
-Install-Module Pester -RequiredVersion 4.0.2 -Force -AllowClobber
-Import-Module Psake, PSDeploy, BuildHelpers, Pester -Force
-Import-Module VMware.PowerCLI -Force | Out-Null
+# Install modules if required
+$ModuleNames = @('Psake', 'PSDeploy', 'BuildHelpers', 'VMware.PowerCLI')
+foreach ($ModuleName in $ModuleNames) {
+    if (-not (Get-Module -Name $ModuleName -ListAvailable)) {
+        Write-Verbose "$ModuleName module not installed. Installing from PSGallery..."
+        Install-Module -Name $ModuleName -Force -AllowClobber
+    }
+}
+Import-Module -Name $ModuleNames -Force
+
+# Target latest version of Pester as older versions are bundled with OS
+if (-not (Get-Module -Name Pester -ListAvailable | Where-Object {$_.Version -match '^4.'})) {
+    Install-Module Pester -MinimumVersion '4.0.3' -Force -AllowClobber -ErrorAction Stop
+}
 
 Set-BuildEnvironment
 
-Invoke-psake -buildFile $ENV:BHProjectPath\psake.ps1 -taskList $Task -nologo
+Invoke-psake -buildFile $ENV:BHProjectPath\build.psake.ps1 -taskList $Task -nologo
 exit ( [int]( -not $psake.build_success ) )

@@ -18,6 +18,9 @@ Properties {
     {
         $Verbose = @{Verbose = $True}
     }
+
+    $TestRootDir = "$ProjectRoot\Tests"
+    $TestScripts = Get-ChildItem "$ProjectRoot\Tests\*Tests.ps1"
 }
 
 Task Default -Depends Test
@@ -35,8 +38,7 @@ Task Test -Depends Init  {
     "`n`tSTATUS: Testing with PowerShell $PSVersion"
 
     # Gather test results. Store them in a variable and file
-    $TestScripts = Get-ChildItem "$ProjectRoot\Tests\*Tests.ps1"
-    $TestResults = Invoke-Pester -Script $TestScripts -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile"
+    $TestResults = Invoke-Pester -Script $TestScripts -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile" -PesterOption @{IncludeVSCodeMarker=$true}
 
     # In Appveyor?  Upload our tests! #Abstract this into a function?
     If($ENV:BHBuildSystem -eq 'AppVeyor')
@@ -93,3 +95,4 @@ Task Deploy -Depends Build {
         "`t* Your commit message includes !deploy (Current: $ENV:BHCommitMessage)"
     }
 }
+
