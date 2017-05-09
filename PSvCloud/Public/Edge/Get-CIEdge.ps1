@@ -33,7 +33,12 @@ function Get-CIEdge {
         $Name
     )
 
-    process {
+    Begin {
+        # Check for vcloud connection
+        Test-CIConnection
+    }
+
+    Process {
 
         foreach ($EdgeName in $Name) {
 
@@ -71,4 +76,4 @@ function Get-CIEdge {
 
     } # End process
 
-}
+} # End function
