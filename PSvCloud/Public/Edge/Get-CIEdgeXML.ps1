@@ -16,7 +16,10 @@ function Get-CIEdgeXML {
     System.Xml.XmlDocument
 
     .EXAMPLE
-    $EdgeXML = Get-CIEdgeXML $EdgeView
+    Get-CIEdgeXML -EdgeView $EdgeView
+
+    .EXAMPLE
+    $EdgeView | Get-CIEdgeXML
 
     .NOTES
     Author: Adam Rush
@@ -24,7 +27,7 @@ function Get-CIEdgeXML {
     [CmdletBinding()]
     [OutputType('System.Xml.XmlDocument')]
     param (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [VMware.VimAutomation.Cloud.Views.Gateway]
         $EdgeView
@@ -41,11 +44,10 @@ function Get-CIEdgeXML {
         # Get Edge Configuration in XML format
         $Uri = $EdgeView.href
         [XML]$EdgeXML = Invoke-RestMethod -URI $Uri -Method GET -Headers $Headers
-
+        Write-Output $EdgeXML
     }
     catch [exception] {
         throw "Could not get configuration XML for [$($EdgeView.Name)]."
     }
 
-    return $EdgeXML
 }
