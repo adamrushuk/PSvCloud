@@ -2,20 +2,14 @@ $ProjectRoot = Resolve-Path "$PSScriptRoot\.."
 $ModuleRoot = Split-Path (Resolve-Path "$ProjectRoot\*\*.psd1")
 $ModuleName = Split-Path $ModuleRoot -Leaf
 $ModulePath = (Join-Path $ModuleRoot "$ModuleName.psd1")
-Import-Module $ModulePath -Force -Verbose | Remove-Module -Force
+Import-Module $ModulePath -Force
 
-$ModuleManifestName = "$($ModuleName).psd1"
-$ModuleManifestPath = "$PSScriptRoot\..\$ModuleManifestName"
-$ModuleManifestPath = (Join-Path $ModuleRoot $ModuleManifestName)
-
-Describe 'Module Manifest Tests' {
+Describe "Module Tests for $ModuleName" {
     It 'Passes Test-ModuleManifest' {
-        { $Result = Test-ModuleManifest -Path $ModuleManifestPath -ErrorAction Stop } | Should Not Throw
+        { $Result = Test-ModuleManifest -Path $ModulePath -ErrorAction Stop } | Should Not Throw
     }
-}
 
-Describe -Name 'Module Tests' {
-    It -Name "Attempting to import the Module" -Test {
+    It "Can import the Module" {
         $Module = Import-Module $ModulePath -Force -PassThru | Where-Object {$_.Name -eq $ModuleName}
         $Module.Name | Should be $ModuleName
     }
@@ -43,14 +37,6 @@ Describe "Comment-based help for $ModuleName" {
                         $Parameter.Description.Text | Should Not BeNullOrEmpty
                     }
                 }
-            }
-
-            it "Has Inputs" {
-                $Help.inputTypes | Should Not BeNullOrEmpty
-            }
-
-            it "Has Outputs" {
-                $Help.returnValues | Should Not BeNullOrEmpty
             }
 
             it "Has Examples" {
