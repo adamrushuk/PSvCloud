@@ -32,7 +32,7 @@ Describe "Connection Tests" {
             }
         )
 
-        It 'Should throw an error' -Verbose {
+        It 'Should throw an error' {
             {Test-CIConnection -DefaultCIServers $Connections} | Should throw "Too many connections - A single connection with Connect-VIServer is required"
         }
     }
