@@ -23,13 +23,13 @@ function Test-CIConnection {
     # Must have only one vCloud connection open
     # Code snipet blatantly stolen from Vester :)
     if ($DefaultCIServers.Count -lt 1) {
-        Write-Warning -Message 'Please connect to vCloud before running this command.'
+        Write-Verbose -Message 'Please connect to vCloud before running this command.'
         throw 'A connection with Connect-CIServer is required'
     }
     elseif ($DefaultCIServers.Count -gt 1) {
-        Write-Warning -Message 'Please connect to only one vCloud before running this command.'
-        Write-Warning -Message "Current connections:  $($DefaultCIServers.Name -join ' / ')"
+        Write-Verbose 'Please connect to only one vCloud before running this command.'
+        Write-Verbose "Current connections:  $($DefaultCIServers.Name -join ' / ')"
         throw 'Too many connections - A single connection with Connect-VIServer is required'
     }
-    Write-Verbose -Message "vCloud: $($DefaultCIServers.Name)"
+    Write-Verbose "Current connections:  $($DefaultCIServers.Name -join ' / ')"
 }
