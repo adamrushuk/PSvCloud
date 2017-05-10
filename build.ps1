@@ -6,11 +6,11 @@ $global:VerbosePreference = "SilentlyContinue"
 Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
 
 # Install modules if required
-$ModNames = @('Psake', 'PSDeploy', 'BuildHelpers', 'PSScriptAnalyzer', 'VMware.PowerCLI')
+$ModNames = @('Psake', 'PSDeploy', 'BuildHelpers', 'PSScriptAnalyzer', 'VMware.VimAutomation.Cloud')
 foreach ($ModName in $ModNames) {
     if (-not (Get-Module -Name $ModName -ListAvailable)) {
         Write-Verbose "$ModName module not installed. Installing from PSGallery..."
-        Install-Module -Name $ModName -Force -AllowClobber
+        Install-Module -Name $ModName -Force -AllowClobber -Scope CurrentUser > $null
     }
 
     if (-not (Get-Module -Name $ModName)) {
@@ -20,7 +20,7 @@ foreach ($ModName in $ModNames) {
 
 # Target latest version of Pester as older versions are bundled with OS
 if (-not (Get-Module -Name Pester -ListAvailable | Where-Object {$_.Version -match '^4.'})) {
-    Install-Module Pester -MinimumVersion '4.0.3' -Force -AllowClobber -ErrorAction Stop
+    Install-Module Pester -MinimumVersion '4.0.3' -Force -AllowClobber -Scope CurrentUser -ErrorAction Stop
 }
 if (-not (Get-Module -Name Pester)) {
     Import-Module -Name Pester -Force
