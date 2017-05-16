@@ -7,7 +7,7 @@ function Get-CIEdge {
     Retrieves vCloud Edges, including View and XML configuration.
 
     .PARAMETER Name
-    Specifies the name of the vShield Edges you want to retrieve.
+    Specifies the name of the vShield Edge you want to retrieve.
 
     .INPUTS
     System.String
@@ -16,10 +16,19 @@ function Get-CIEdge {
     System.Management.Automation.PSCustomObject
 
     .EXAMPLE
+    Get-CIEdgeView
+
+    Returns all vShield Edges.
+
+    .EXAMPLE
     Get-CIEdge -Name 'Edge01'
+
+    Returns a single vShield Edge.
 
     .EXAMPLE
     Get-CIEdge -Name 'Edge01', 'Edge02'
+
+    Returns multiple vShield Edges.
 
     .NOTES
     Author: Adam Rush
@@ -27,7 +36,7 @@ function Get-CIEdge {
     [CmdletBinding()]
     [OutputType('System.Management.Automation.PSCustomObject')]
     param (
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory = $false, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [string[]]
         $Name
@@ -40,39 +49,44 @@ function Get-CIEdge {
 
     Process {
 
-        foreach ($EdgeName in $Name) {
+        # Get CIViews
+        $CIEdgeViewParams = @{}
+        if ($PSBoundParameters.ContainsKey('Name')) {
+            $CIEdgeViewParams.Name = $Name
+        }
 
-            # Get Edge details
-            try {
-                $CIEdgeView = Get-CIEdgeView -Name $EdgeName
+        try {
+            $CIEdgeViews = Get-CIEdgeView @CIEdgeViewParams
 
-                # Validation checks
-                # Test for null object
-                if ($null -eq $CIEdgeView) {
-                    throw "Edge Gateway named $EdgeName not found."
-                }
-                # Test for 1 returned object
-                if ($CIEdgeView.Count -gt 1) {
-                    throw "More than 1 Edge Gateway found for $EdgeName."
-                }
+            # Validation checks
+            if ($CIEdgeViews.count -eq 0) {
+                throw "No Edge Gateways were found."
+            }
+        }
+        catch [exception] {
+            Write-Error $_
+        }
+
+        try {
+            foreach ($CIEdgeView in $CIEdgeViews) {
 
                 # Get Edge XML Configuration
                 $CIEdgeXML = $CIEdgeView | Get-CIEdgeXML
 
                 # Output to pipeline
                 [PSCustomObject]@{
-                    Name = $CIEdgeView.Name
-                    Href = $CIEdgeView.Href
-                    Id = $CIEdgeView.Id
+                    Name          = $CIEdgeView.Name
+                    Href          = $CIEdgeView.Href
+                    Id            = $CIEdgeView.Id
                     ExtensionData = $CIEdgeView
-                    XML = $CIEdgeXML
+                    XML           = $CIEdgeXML
                 }
-            }
-            catch [exception] {
-                Write-Error $_
-            }
 
-        } # End foreach
+            }
+        }
+        catch [exception] {
+            Write-Error $_
+        }
 
     } # End process
 

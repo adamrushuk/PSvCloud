@@ -6,8 +6,8 @@ function Get-CIEdgeXML {
     .DESCRIPTION
     Gets the vCloud Edge configuration XML using the REST API.
 
-    .PARAMETER EdgeView
-    EdgeView object for SessionKey and Name properties.
+    .PARAMETER CIEdgeView
+    CIEdgeView object for SessionKey and Name properties.
 
     .INPUTS
     VMware.VimAutomation.Cloud.Views.Gateway
@@ -16,10 +16,10 @@ function Get-CIEdgeXML {
     System.Xml.XmlDocument
 
     .EXAMPLE
-    Get-CIEdgeXML -EdgeView $EdgeView
+    Get-CIEdgeXML -CIEdgeView $CIEdgeView
 
     .EXAMPLE
-    $EdgeView | Get-CIEdgeXML
+    $CIEdgeView | Get-CIEdgeXML
 
     .NOTES
     Author: Adam Rush
@@ -30,24 +30,24 @@ function Get-CIEdgeXML {
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [VMware.VimAutomation.Cloud.Views.Gateway]
-        $EdgeView
+        $CIEdgeView
     )
 
     # Get Edge XML
     try {
         # Set headers
         $Headers = @{
-            "x-vcloud-authorization" = $EdgeView.Client.SessionKey
-            "Accept" = "application/*+xml;version=5.1"
+            "x-vcloud-authorization" = $CIEdgeView.Client.SessionKey
+            "Accept"                 = "application/*+xml;version=5.1"
         }
 
         # Get Edge Configuration in XML format
-        $Uri = $EdgeView.href
+        $Uri = $CIEdgeView.href
         [XML]$EdgeXML = Invoke-RestMethod -URI $Uri -Method GET -Headers $Headers
         Write-Output $EdgeXML
     }
     catch [exception] {
-        throw "Could not get configuration XML for [$($EdgeView.Name)]."
+        throw "Could not get configuration XML for [$($CIEdgeView.Name)]."
     }
 
 }
