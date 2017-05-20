@@ -47,7 +47,7 @@ function Get-CIEdgeXML {
         Write-Output $EdgeXML
     }
     catch [exception] {
-        throw "Could not get configuration XML for [$($CIEdgeView.Name)]."
+        throw "Could not get configuration XML for $($CIEdgeView.Name)."
     }
 
 }
