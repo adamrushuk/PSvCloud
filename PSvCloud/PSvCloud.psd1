@@ -12,7 +12,7 @@
 RootModule = 'PSvCloud.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.1'
+ModuleVersion = '0.0.2'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -51,7 +51,7 @@ PowerShellVersion = '4.0'
 # ProcessorArchitecture = ''
 
 # Modules that must be imported into the global environment prior to importing this module
-RequiredModules = @('VMware.VimAutomation.Cloud')
+#RequiredModules = @('VMware.VimAutomation.Cloud')
 
 # Assemblies that must be loaded prior to importing this module
 # RequiredAssemblies = @()
