@@ -80,7 +80,7 @@ Task Test -Depends Analyze {
     $TestResults = Invoke-Pester -Script $TestScripts -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile" -PesterOption @{IncludeVSCodeMarker = $true}
 
     # In Appveyor?  Upload our tests! #Abstract this into a function?
-    If ($ENV:BHBuildSystem -eq 'AppVeyor') {
+    if ($ENV:BHBuildSystem -eq 'AppVeyor') {
         (New-Object 'System.Net.WebClient').UploadFile(
             "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)",
             "$ProjectRoot\$TestFile" )
@@ -103,32 +103,22 @@ Task Build -Depends Test {
     Set-ModuleFunctions
 
     # Bump the module version
-    $Version = Get-NextPSGalleryVersion -Name $env:BHProjectName
-    Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $Version
+    try {
+        $Version = Get-NextPSGalleryVersion -Name $env:BHProjectName -ErrorAction Stop
+        Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $Version -ErrorAction stop
+    }
+    catch {
+        "Failed to update version for '$env:BHProjectName': $_.`nContinuing with existing version"
+    }
 }
 
 Task Deploy -Depends Build {
     $lines
 
-    # Gate deployment
-    if (
-        $ENV:BHBuildSystem -ne 'Unknown' -and
-        $ENV:BHBranchName -eq "master" -and
-        $ENV:BHCommitMessage -match '!deploy'
-    ) {
-        $Params = @{
-            Path = $ProjectRoot
-            Force = $true
-        }
-
-        Invoke-PSDeploy @Verbose @Params
+    $Params = @{
+        Path    = "$ProjectRoot\Build"
+        Force   = $true
+        Recurse = $false # We keep psdeploy artifacts, avoid deploying those : )
     }
-    else {
-        "Skipping deployment: To deploy, ensure that...`n" +
-        "`t* You are in a known build system (Current: $ENV:BHBuildSystem)`n" +
-        "`t* You are committing to the master branch (Current: $ENV:BHBranchName) `n" +
-        "`t* Your commit message includes !deploy (Current: $ENV:BHCommitMessage)"
-    }
+    Invoke-PSDeploy @Verbose @Params
 }
-
-
