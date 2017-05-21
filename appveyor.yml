@@ -1,10 +1,10 @@
 # Version number
-version: 0.1.0.{build}
+version: 0.2.0.{build}
 
 # See http://www.appveyor.com/docs/appveyor-yml for many more options
 environment:
   NugetApiKey:
-    secure: TODO
+    secure: j6GuCUpWeDI+J5F8eS5L8Y+ze5UCFw3f1+3/tbNahNriT7vwKoouMxCXpNF8MOvM
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 image: WMF 5
