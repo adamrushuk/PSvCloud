@@ -116,7 +116,7 @@ Task Deploy -Depends Build {
     $lines
 
     $Params = @{
-        Path    = "$ProjectRoot\Build"
+        Path    = "$ProjectRoot"
         Force   = $true
         Recurse = $false
     }
