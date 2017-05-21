@@ -100,7 +100,7 @@ Task Build -Depends Test {
     $lines
 
     # Load the module, read the exported functions, update the psd1 FunctionsToExport
-    Set-ModuleFunctions
+    Set-ModuleFunctions -Name $env:BHPSModuleManifest
 
     # Bump the module version
     try {
@@ -118,7 +118,7 @@ Task Deploy -Depends Build {
     $Params = @{
         Path    = "$ProjectRoot\Build"
         Force   = $true
-        Recurse = $false # We keep psdeploy artifacts, avoid deploying those : )
+        Recurse = $false
     }
     Invoke-PSDeploy @Verbose @Params
 }
