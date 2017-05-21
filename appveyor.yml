@@ -1,5 +1,8 @@
+# Hardcode clone folder for proper ModuleName casing
+clone_folder: c:\projects\PSvCloud
+
 # Version number
-version: 0.2.0.{build}
+version: 0.1.0.{build}
 
 # See http://www.appveyor.com/docs/appveyor-yml for many more options
 environment:
