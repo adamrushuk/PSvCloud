@@ -68,7 +68,7 @@ Task Analyze -Depends Init {
 
         }
 
-    } 
+    }
 
 }
 
@@ -87,8 +87,7 @@ Task Test -Depends Analyze {
 
     Remove-Item $TestFilePath -Force -ErrorAction SilentlyContinue
 
-    # Failed tests?
-    # Need to tell psake or it will proceed to the deployment. Danger!
+    # Fail build if any tests fail
     if ($TestResults.FailedCount -gt 0) {
         Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
     }
