@@ -68,7 +68,7 @@ Task Analyze -Depends Init {
 
         }
 
-    }
+    } 
 
 }
 
@@ -77,16 +77,15 @@ Task Test -Depends Analyze {
     "`nSTATUS: Testing with PowerShell $PSVersion"
 
     # Gather test results. Store them in a variable and file
-    $TestResults = Invoke-Pester -Script $TestScripts -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile" -PesterOption @{IncludeVSCodeMarker = $true}
+    $TestFilePath = Join-Path -Path $ProjectRoot -ChildPath $TestFile
+    $TestResults = Invoke-Pester -Script $TestScripts -PassThru -OutputFormat NUnitXml -OutputFile $TestFilePath -PesterOption @{IncludeVSCodeMarker = $true}
 
-    # In Appveyor?  Upload our tests! #Abstract this into a function?
+    # Upload test results to Appveyor
     if ($ENV:BHBuildSystem -eq 'AppVeyor') {
-        (New-Object 'System.Net.WebClient').UploadFile(
-            "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)",
-            "$ProjectRoot\$TestFile" )
+        Add-TestResultToAppVeyor -TestFile $TestFilePath
     }
 
-    Remove-Item "$ProjectRoot\$TestFile" -Force -ErrorAction SilentlyContinue
+    Remove-Item $TestFilePath -Force -ErrorAction SilentlyContinue
 
     # Failed tests?
     # Need to tell psake or it will proceed to the deployment. Danger!
