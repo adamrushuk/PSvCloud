@@ -12,7 +12,7 @@
 RootModule = 'PSvCloud.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.1'
+ModuleVersion = '0.0.5'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -95,7 +95,7 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @('VMware', 'vCloud', 'vCloudDirector', 'Cloud', 'IaaS')
 
         # A URL to the license for this module.
         LicenseUri = 'https://raw.githubusercontent.com/adamrushuk/PSvCloud/master/LICENSE'
