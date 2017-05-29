@@ -4,8 +4,7 @@
 A PowerShell module for VMware vCloud Director.
 
 ## Goals
-I've created various scripts for vCloud Director over the past few years, so
-I plan to use this module as an opportunity to refactor and share these scripts, applying the latest methods and best practices I've learnt recently around [The Release Pipeline Model](https://msdn.microsoft.com/en-us/powershell/dsc/whitepapers#the-release-pipeline-model) (Source > Build > Test > Release).
+I've created various scripts for vCloud Director over the past few years, so I plan to use this module as an opportunity to refactor and share these scripts one by one. I'll apply the latest methods and best practices I've learnt recently, with a focus on the process around [The Release Pipeline Model](https://msdn.microsoft.com/en-us/powershell/dsc/whitepapers#the-release-pipeline-model) (Source > Build > Test > Release).
 
 ### Source
 Use Git with a popular [branching model](http://nvie.com/posts/a-successful-git-branching-model/) geared towards collaboration.
@@ -18,7 +17,8 @@ Use [Pester](https://github.com/pester/Pester) for Unit Testing.
 
 ### Release
 Configure [Appveyor](https://www.appveyor.com) for Continuous Integration / Continuous Deployment.
-This should cover:
+
+This will cover:
 - Release to the [PowerShell Gallery](https://www.powershellgallery.com/packages/PSvCloud).
-- Uploading created Artifacts as a [tagged Release in GitHub](https://github.com/adamrushuk/PSvCloud/releases)
+- Uploading Artifacts as a [tagged Release in GitHub](https://github.com/adamrushuk/PSvCloud/releases)
 - Automatically updating documentation to a 3rd-party like [ReadTheDocs](https://docs.readthedocs.io/en/latest/).
