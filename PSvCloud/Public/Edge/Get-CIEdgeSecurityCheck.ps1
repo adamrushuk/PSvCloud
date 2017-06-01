@@ -126,13 +126,6 @@ function Get-CIEdgeSecurityCheck {
                         $RuleViolation = "Any to Any on any port"
                         break
                     }
-                    {$Rule.SourceIp -eq "internal" -and $Rule.DestinationIp -eq "external" -and $Rule.DestinationPortRange -eq "Any"} {  
-                        $OffendingRuleCounter = $true
-                        $RuleId = $Rule.Id
-                        $RuleDescription = $Rule.Description 
-                        $RuleViolation = "Allowed"
-                        break
-                    }
                 }
                 
                 # Build the offending rule PSCustomObject
