@@ -16,7 +16,7 @@ function Get-CIEdge {
     System.Management.Automation.PSCustomObject
 
     .EXAMPLE
-    Get-CIEdgeView
+    Get-CIEdge
 
     Returns all vShield Edges.
 
@@ -65,6 +65,7 @@ function Get-CIEdge {
         }
         catch [exception] {
             Write-Error $_
+            Continue
         }
 
         try {
@@ -85,7 +86,7 @@ function Get-CIEdge {
             }
         }
         catch [exception] {
-            Write-Error $_
+            throw $_
         }
 
     } # End process
