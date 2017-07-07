@@ -16,7 +16,7 @@ function Get-CIEdgeSecurityCheck {
     Specifies the PSCustomObject output of Get-CIEdge.
 
     .INPUTS
-    System.String
+    System.Management.Automation.PSCustomObject
 
     .OUTPUTS
     System.Management.Automation.PSCustomObject
