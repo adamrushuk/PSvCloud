@@ -15,11 +15,11 @@ function Get-EqualOrNextHighestNumber {
         Specifies an set of acceptable numbers.
 
         .INPUTS
-        System.Int32
+        Int
         System.Object[]
 
         .OUTPUTS
-        System.Int32
+        Int32
 
         .EXAMPLE
         Get-EqualOrNextHighestNumber -Number 4 -NumberSet @(2, 4, 8, 16)
@@ -37,25 +37,35 @@ function Get-EqualOrNextHighestNumber {
         Twitter: @adamrushuk
     #>
     [CmdletBinding()]
-    [OutputType('System.Int32')]
+    [OutputType('Int')]
     param (
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [System.Int32]
+        [Int]
         $Number,
 
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [System.Int32[]]
+        [Int[]]
         $NumberSet
     )
 
+    Write-Verbose "Number is: $Number"
+    Write-Verbose "NumberSet is: $NumberSet"
+
     try {
+
+        # Assign max value if Number is higher than any in NumberSet
+        $MaxNumber = $NumberSet[$NumberSet.Count-1]
+        if ($Number -gt $MaxNumber) {
+            $Number = $MaxNumber
+        }
 
         for ($i = 0; $i -lt $NumberSet.Count; $i++) {
             if ($Number -gt $NumberSet[$i]) {
                 continue
             } else {
+                Write-Verbose "Returning: $($NumberSet[$i])"
                 return $NumberSet[$i]
             }
         }
