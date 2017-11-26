@@ -20,7 +20,7 @@ foreach ($ModName in $ModNames) {
 
 # Target latest version of Pester as older versions are bundled with OS
 if (-not (Get-Module -Name Pester -ListAvailable | Where-Object {$_.Version -match '^4.'})) {
-    Install-Module Pester -MinimumVersion '4.0.6' -Force -AllowClobber -Scope CurrentUser -SkipPublisherCheck -ErrorAction Stop
+    Install-Module Pester -MinimumVersion '4.1.0' -Force -AllowClobber -Scope CurrentUser -SkipPublisherCheck -ErrorAction Stop
 }
 if (-not (Get-Module -Name Pester)) {
     Import-Module -Name Pester -Force
