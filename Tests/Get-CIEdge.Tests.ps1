@@ -121,7 +121,7 @@ InModuleScope $ModuleName {
 
             # Are Mocks called?
             It 'Mocks are called' {
-                Assert-VerifiableMocks
+                Assert-VerifiableMock
             }
 
         } # End Input Context
@@ -154,7 +154,7 @@ InModuleScope $ModuleName {
 
             # Are Mocks called?
             It 'Mocks are called' {
-                Assert-VerifiableMocks
+                Assert-VerifiableMock
             }
 
         } # End Execution Context
