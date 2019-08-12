@@ -1,5 +1,10 @@
 pipeline {
-  agent any
+  agent {
+    node {
+      label 'windows'
+    }
+
+  }
   stages {
     stage('Analyze') {
       steps {
